@@ -49,4 +49,12 @@ public class BookController {
         List<Book> book = bookService.getBooksByReader(user);
         return ResponseEntity.ok(book);
     }
+
+    @GetMapping("/byCategories")
+    public ResponseEntity<?> getBooksByCategories(@RequestParam List<Integer> categoriesIds) {
+        List<Book> books = bookService.getBooksByCategories(categoriesIds);
+        return ResponseEntity.ok(books);
+    }
+
+
 }

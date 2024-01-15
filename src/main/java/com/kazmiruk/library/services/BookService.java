@@ -6,6 +6,7 @@ import com.kazmiruk.library.repositories.BookRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -44,5 +45,9 @@ public class BookService {
 
     public List<Book> getBooksByReader(User user) {
         return bookRepository.findAllByReader(user);
+    }
+
+    public List<Book> getBooksByCategories(List<Integer> categoryIds) {
+        return bookRepository.findAllByCategoriesId(categoryIds);
     }
 }
