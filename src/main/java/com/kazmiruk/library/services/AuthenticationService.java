@@ -23,12 +23,18 @@ public class AuthenticationService {
     private final JwtService jwtService;
 
     private final AuthenticationManager authenticationManager;
+    private final UserRepository userRepository;
 
     public AuthenticationResponse register(RegisterRequest request) {
+        boolean isUserWithEmailAlreadyExist = userRepository.findByEmail(request.getEmail()).isPresent();
+        if (isUserWithEmailAlreadyExist) {
+            throw new RuntimeException("User with this email already exists");
+        }
         var user = User.builder()
                 .firstName(request.getFirstName())
                 .lastName(request.getLastName())
                 .email(request.getEmail())
+                .dateOfBirth(request.getDateOfBirth())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(Role.READER)
                 .build();
