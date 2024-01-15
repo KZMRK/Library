@@ -25,7 +25,11 @@ public class BookService {
     public List<Book> borrowBooksById(List<Integer> bookIds, User reader) {
         List<Book> books = bookRepository.findAllById(bookIds);
         books.stream().filter(book -> book.getReader() == null)
-                .forEach(book -> book.setReader(reader));
+                .forEach(book -> {
+                            book.setReader(reader);
+                            book.setBorrowedAt(LocalDate.now());
+                        }
+                );
         return bookRepository.saveAll(books);
     }
 
@@ -33,6 +37,7 @@ public class BookService {
         Book book = bookRepository.findById(bookId).get();
         if (book.getReader().equals(user)) {
             book.setReader(null);
+            book.setBorrowedAt(null);
         }
         return bookRepository.save(book);
     }

@@ -27,7 +27,15 @@ public class Book {
     )
     @JsonManagedReference
     private List<Author> authors;
+    @ManyToMany
+    @JoinTable(name = "book_category",
+            joinColumns = @JoinColumn(name = "book_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id", referencedColumnName = "id")
+    )
+    @JsonManagedReference
+    private Set<Category> categories;
     private int numOfPages;
     @ManyToOne
     private User reader;
+    private LocalDate borrowedAt;
 }
