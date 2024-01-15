@@ -1,5 +1,6 @@
 package com.kazmiruk.library.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.kazmiruk.library.enums.Role;
 import jakarta.persistence.*;
@@ -11,6 +12,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
 
@@ -27,6 +29,8 @@ public class User implements UserDetails {
     private Integer id;
     private String firstName;
     private String lastName;
+    @JsonFormat(pattern = "dd-MM-yyyy")
+    private LocalDate dateOfBirth;
     private String email;
     @JsonIgnore
     private String password;

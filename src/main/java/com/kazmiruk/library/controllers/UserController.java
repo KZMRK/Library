@@ -1,7 +1,6 @@
 package com.kazmiruk.library.controllers;
 
 import com.kazmiruk.library.entities.User;
-import com.kazmiruk.library.repositories.UserRepository;
 import com.kazmiruk.library.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

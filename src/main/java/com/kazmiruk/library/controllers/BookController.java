@@ -2,6 +2,7 @@ package com.kazmiruk.library.controllers;
 
 import com.kazmiruk.library.entities.Book;
 import com.kazmiruk.library.entities.User;
+import com.kazmiruk.library.enums.AgeCategory;
 import com.kazmiruk.library.services.BookService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -56,5 +57,10 @@ public class BookController {
         return ResponseEntity.ok(books);
     }
 
+    @GetMapping("/borrowed/{ageCategory}")
+    public ResponseEntity<?> getBooksByAgeRange(@PathVariable AgeCategory ageCategory) {
+        List<Book> books = bookService.getBooksByReaderAge(ageCategory);
+        return ResponseEntity.ok(books);
+    }
 
 }

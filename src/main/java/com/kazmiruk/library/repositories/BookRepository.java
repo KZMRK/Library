@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Repository
@@ -15,4 +16,10 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
 
     @Query("SELECT b FROM Book b JOIN b.categories c WHERE c.id in :categoryIds")
     List<Book> findAllByCategoriesId(@Param("categoryIds") List<Integer> categoryIds);
+    
+    List<Book> findAllByReaderDateOfBirthGreaterThan(LocalDate date);
+
+    List<Book> findAllByReaderDateOfBirthLessThan(LocalDate date);
+
+    List<Book> findALlByReaderDateOfBirthBetween(LocalDate start, LocalDate end);
 }
