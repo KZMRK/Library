@@ -36,7 +36,7 @@ public class BookController {
         return ResponseEntity.ok(borrowedBooks);
     }
 
-    @PutMapping("{bookId}")
+    @PutMapping("/return/{bookId}")
     public ResponseEntity<?> returnBook(
             @PathVariable Integer bookId,
             @AuthenticationPrincipal User user
@@ -63,4 +63,9 @@ public class BookController {
         return ResponseEntity.ok(books);
     }
 
+    @GetMapping("/top5")
+    public ResponseEntity<?> getTop5BooksLastYear() {
+        List<Book> books = bookService.getTop5BooksLastYear();
+        return ResponseEntity.ok(books);
+    }
 }

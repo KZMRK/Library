@@ -1,14 +1,18 @@
 package com.kazmiruk.library.services;
 
 import com.kazmiruk.library.entities.Book;
+import com.kazmiruk.library.entities.BookLoan;
 import com.kazmiruk.library.entities.User;
 import com.kazmiruk.library.enums.AgeCategory;
+import com.kazmiruk.library.repositories.BookLoanRepository;
 import com.kazmiruk.library.repositories.BookRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -16,23 +20,34 @@ public class BookService {
 
     private final BookRepository bookRepository;
 
+    private final BookLoanRepository bookLoanRepository;
+
     public List<Book> getAllBooks() {
         return bookRepository.findAll();
     }
 
     public List<Book> borrowBooksById(List<Integer> bookIds, User reader) {
         List<Book> books = bookRepository.findAllById(bookIds);
+        List<BookLoan> bookLoans = new LinkedList<>();
         books = books.stream().filter(book -> book.getReader() == null).toList();
         books.forEach(book -> {
             book.setReader(reader);
             book.setBorrowedAt(LocalDate.now());
+            BookLoan bookLoan = BookLoan.builder()
+                    .reader(reader)
+                    .book(book)
+                    .borrowAt(LocalDate.now())
+                    .build();
+            bookLoans.add(bookLoan);
         });
+        bookLoanRepository.saveAll(bookLoans);
         return bookRepository.saveAll(books);
     }
 
     public Book returnBook(Integer bookId, User user) {
         Book book = bookRepository.findById(bookId).get();
-        if (book.getReader().equals(user)) {
+        System.out.println(book.getName());
+        if (Objects.equals(book.getReader().getId(), user.getId())) {
             book.setReader(null);
             book.setBorrowedAt(null);
         }
@@ -75,5 +90,10 @@ public class BookService {
                 );
         }
         return books;
+    }
+
+    public List<Book> getTop5BooksLastYear() {
+        LocalDate lastYear = LocalDate.now().minusYears(1);
+        return bookLoanRepository.findTop5BooksLastYear(lastYear);
     }
 }
