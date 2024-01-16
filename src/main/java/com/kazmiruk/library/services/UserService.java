@@ -1,6 +1,7 @@
 package com.kazmiruk.library.services;
 
 import com.kazmiruk.library.entities.User;
+import com.kazmiruk.library.repositories.BookLoanRepository;
 import com.kazmiruk.library.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,8 @@ import java.util.List;
 public class UserService {
 
     private final UserRepository userRepository;
+
+    private final BookLoanRepository bookLoanRepository;
 
     public List<User> getUsersLateReturnBook() {
         List<User> readers = userRepository.findByBooksIsNotNull();
@@ -30,5 +33,16 @@ public class UserService {
                                     return monthPassed >= 1;
                                 })
                 ).toList();
+    }
+
+    public List<User> getUsersHaveNotBorrowBookLastYear() {
+        LocalDate lastYear = LocalDate.now().minusYears(1);
+
+        List<User> usersWhoBorrowedLastYear = bookLoanRepository.findDistinctReaderIdsByBorrowAtAfter(lastYear);
+        List<User> users = userRepository.findAll();
+
+        return users.stream()
+                .filter(user -> !usersWhoBorrowedLastYear.contains(user))
+                .toList();
     }
 }

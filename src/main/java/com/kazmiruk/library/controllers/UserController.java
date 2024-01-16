@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Controller
@@ -20,6 +21,12 @@ public class UserController {
     @GetMapping("/lateReturn")
     public ResponseEntity<?> getUsersLateReturnBook() {
         List<User> users = userService.getUsersLateReturnBook();
+        return ResponseEntity.ok(users);
+    }
+
+    @GetMapping("/notBorrowLastYear")
+    public ResponseEntity<?> getUsersHaveNotBorrowBookLastYear() {
+        List<User> users = userService.getUsersHaveNotBorrowBookLastYear();
         return ResponseEntity.ok(users);
     }
 }
