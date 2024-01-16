@@ -18,6 +18,7 @@ public class AuthenticationController {
 
     private final AuthenticationService service;
 
+    /* Ability to register new users; */
     @PostMapping("/register")
     public ResponseEntity<?> register(
             @RequestBody RegisterRequest request
@@ -29,6 +30,7 @@ public class AuthenticationController {
         }
     }
 
+    /* Ability to authorize the user in the application; */
     @PostMapping("/authenticate")
     public ResponseEntity<AuthenticationResponse> register(
             @RequestBody AuthenticationRequest request

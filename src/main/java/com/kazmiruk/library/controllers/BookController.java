@@ -18,11 +18,13 @@ public class BookController {
 
     private final BookService bookService;
 
+    /* Ability to view all books in the library */
     @GetMapping
     public ResponseEntity<?> getBooks() {
         return ResponseEntity.ok(bookService.getAllBooks());
     }
 
+    /* Ability to borrow books;*/
     @PutMapping("/borrow")
     public ResponseEntity<?> borrowBook(
         @RequestParam List<Integer> bookIds,
@@ -36,6 +38,7 @@ public class BookController {
         return ResponseEntity.ok(borrowedBooks);
     }
 
+    /* Ability to return books; */
     @PutMapping("/return/{bookId}")
     public ResponseEntity<?> returnBook(
             @PathVariable Integer bookId,
@@ -45,24 +48,28 @@ public class BookController {
         return ResponseEntity.ok(returnedBook);
     }
 
+    /* Ability to view borrowed books; */
     @GetMapping("/borrowed")
     public ResponseEntity<?> getBorrowedBooks(@AuthenticationPrincipal User user) {
         List<Book> book = bookService.getBooksByReader(user);
         return ResponseEntity.ok(book);
     }
 
+    /* Ability to view books by one or multiple categories */
     @GetMapping("/byCategories")
     public ResponseEntity<?> getBooksByCategories(@RequestParam List<Integer> categoriesIds) {
         List<Book> books = bookService.getBooksByCategories(categoriesIds);
         return ResponseEntity.ok(books);
     }
 
+    /* Ability to view borrowed books for any of these ages: */
     @GetMapping("/borrowed/{ageCategory}")
     public ResponseEntity<?> getBooksByAgeRange(@PathVariable AgeCategory ageCategory) {
         List<Book> books = bookService.getBooksByReaderAge(ageCategory);
         return ResponseEntity.ok(books);
     }
 
+    /* Ability to view the top 5 most popular books in the library for the last year; */
     @GetMapping("/top5")
     public ResponseEntity<?> getTop5BooksLastYear() {
         List<Book> books = bookService.getTop5BooksLastYear();
