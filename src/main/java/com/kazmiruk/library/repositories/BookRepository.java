@@ -11,15 +11,15 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Repository
-public interface BookRepository extends JpaRepository<Book, Integer> {
-    List<Book> findAllByReader(User reader);
+public interface BookRepository extends JpaRepository<Book, Long> {
+    /*List<Book> findAllByReader(User reader);*/
 
     @Query("SELECT b FROM Book b JOIN b.categories c WHERE c.id in :categoryIds")
     List<Book> findAllByCategoriesId(@Param("categoryIds") List<Integer> categoryIds);
-    
-    List<Book> findAllByReaderDateOfBirthGreaterThan(LocalDate date);
+
+    /*List<Book> findAllByReaderDateOfBirthGreaterThan(LocalDate date);
 
     List<Book> findAllByReaderDateOfBirthLessThan(LocalDate date);
 
-    List<Book> findALlByReaderDateOfBirthBetween(LocalDate start, LocalDate end);
+    List<Book> findALlByReaderDateOfBirthBetween(LocalDate start, LocalDate end);*/
 }
