@@ -1,4 +1,4 @@
-package com.kazmiruk.library.controllers;
+package com.kazmiruk.library.web;
 
 import com.kazmiruk.library.entities.User;
 import com.kazmiruk.library.services.UserService;
@@ -19,11 +19,11 @@ public class UserController {
     /* Ability to view users who are late in
      returning books (a book can be borrowed for
      a max of one month) */
-    @GetMapping("/lateReturn")
+    /*@GetMapping("/lateReturn")
     public ResponseEntity<?> getUsersLateReturnBook() {
         List<User> users = userService.getUsersLateReturnBook();
         return ResponseEntity.ok(users);
-    }
+    }*/
 
     /* Ability to view users who have not
     borrowed any of the books in the last year;*/

@@ -1,4 +1,4 @@
-package com.kazmiruk.library.controllers;
+package com.kazmiruk.library.web;
 
 import com.kazmiruk.library.dto.AuthenticationRequest;
 import com.kazmiruk.library.dto.AuthenticationResponse;
@@ -18,7 +18,7 @@ public class AuthenticationController {
 
     private final AuthenticationService service;
 
-    /* Ability to register new users; */
+    /* Ability to login new users; */
     @PostMapping("/register")
     public ResponseEntity<?> register(
             @RequestBody RegisterRequest request
@@ -26,13 +26,13 @@ public class AuthenticationController {
         try {
             return ResponseEntity.ok(service.register(request));
         } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return  ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
     /* Ability to authorize the user in the application; */
     @PostMapping("/authenticate")
-    public ResponseEntity<AuthenticationResponse> register(
+    public ResponseEntity<AuthenticationResponse> login(
             @RequestBody AuthenticationRequest request
     ) {
         return ResponseEntity.ok(service.authenticate(request));
