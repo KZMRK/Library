@@ -2,12 +2,12 @@ package com.kazmiruk.library.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
-import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -17,11 +17,12 @@ public class Author {
 
     @Id
     @GeneratedValue
-    private int id;
+    private Long id;
+    @Size(min = 4, max = 15)
     private String firstName;
+    @Size(min = 2, max = 20)
     private String lastName;
-
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "authors")
+    @ManyToMany(mappedBy = "authors", fetch = FetchType.LAZY)
     @JsonBackReference
     private List<Book> books;
 }
