@@ -18,7 +18,7 @@ public class UserService {
 
     private final BookLoanRepository bookLoanRepository;
 
-    public List<User> getUsersLateReturnBook() {
+    /*public List<User> getUsersLateReturnBook() {
         List<User> readers = userRepository.findByBooksIsNotNull();
         return readers.stream()
                 .filter(reader ->
@@ -33,7 +33,7 @@ public class UserService {
                                     return monthPassed >= 1;
                                 })
                 ).toList();
-    }
+    }*/
 
     public List<User> getUsersHaveNotBorrowBookLastYear() {
         LocalDate lastYear = LocalDate.now().minusYears(1);
