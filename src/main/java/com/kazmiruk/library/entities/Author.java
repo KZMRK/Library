@@ -18,10 +18,13 @@ public class Author {
     @Id
     @GeneratedValue
     private Long id;
-    @Size(min = 4, max = 15)
+
+    @Size(min = 2, max = 15)
     private String firstName;
+
     @Size(min = 2, max = 20)
     private String lastName;
+
     @ManyToMany(mappedBy = "authors", fetch = FetchType.LAZY)
     @JsonBackReference
     private List<Book> books;

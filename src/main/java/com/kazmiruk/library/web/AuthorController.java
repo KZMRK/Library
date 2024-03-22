@@ -2,7 +2,9 @@ package com.kazmiruk.library.web;
 
 import com.kazmiruk.library.dto.AuthorRequest;
 import com.kazmiruk.library.dto.AuthorResponse;
+import com.kazmiruk.library.dto.BookResponse;
 import com.kazmiruk.library.services.AuthorService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,9 +32,14 @@ public class AuthorController {
         return ResponseEntity.ok(authorService.getAllAuthors());
     }
 
+    @GetMapping("/{authorId}/books")
+    public ResponseEntity<List<BookResponse>> getBooksByAuthorId(@PathVariable Long authorId) {
+        return ResponseEntity.ok(authorService.getBooksByAuthorId(authorId));
+    }
+
     @PostMapping
     public ResponseEntity<AuthorResponse> addAuthor(
-            @RequestBody AuthorRequest authorDTO
+            @RequestBody @Valid AuthorRequest authorDTO
     ) {
         return ResponseEntity.ok(authorService.addAuthor(authorDTO));
     }

@@ -1,5 +1,5 @@
 package com.kazmiruk.library.enums;
 
 public enum Role {
-    READER
+    ROLE_READER, ROLE_ADMIN
 }

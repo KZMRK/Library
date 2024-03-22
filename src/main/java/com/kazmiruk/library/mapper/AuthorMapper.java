@@ -4,6 +4,7 @@ import com.kazmiruk.library.dto.AuthorRequest;
 import com.kazmiruk.library.dto.AuthorResponse;
 import com.kazmiruk.library.entities.Author;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 import java.util.List;
 
@@ -11,6 +12,8 @@ import java.util.List;
 public interface AuthorMapper {
 
 
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "books", ignore = true)
     Author toEntity(AuthorRequest authorRequest);
 
     AuthorResponse toResponse(Author author);

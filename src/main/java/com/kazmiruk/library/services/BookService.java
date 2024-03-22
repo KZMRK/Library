@@ -7,7 +7,6 @@ import com.kazmiruk.library.entities.Book;
 import com.kazmiruk.library.entities.Category;
 import com.kazmiruk.library.mapper.BookMapper;
 import com.kazmiruk.library.repositories.AuthorRepository;
-import com.kazmiruk.library.repositories.BookLoanRepository;
 import com.kazmiruk.library.repositories.BookRepository;
 import com.kazmiruk.library.repositories.CategoryRepository;
 import lombok.RequiredArgsConstructor;
@@ -24,8 +23,6 @@ public class BookService {
 
     private final BookRepository bookRepository;
 
-    private final BookLoanRepository bookLoanRepository;
-
     private final BookMapper bookMapper;
 
     private final AuthorRepository authorRepository;
@@ -38,78 +35,6 @@ public class BookService {
                 .toList();
     }
 
-    /*public List<Book> borrowBooksById(List<Integer> bookIds, User reader) {
-        List<Book> books = bookRepository.findAllById(bookIds);
-        List<BookLoan> bookLoans = new LinkedList<>();
-        books = books.stream().filter(book -> book.getReader() == null).toList();
-        books.forEach(book -> {
-            book.setReader(reader);
-            book.setBorrowedAt(LocalDate.now());
-            BookLoan bookLoan = BookLoan.builder()
-                    .reader(reader)
-                    .book(book)
-                    .borrowAt(LocalDate.now())
-                    .build();
-            bookLoans.add(bookLoan);
-        });
-        bookLoanRepository.saveAll(bookLoans);
-        return bookRepository.saveAll(books);
-    }*/
-
-    /*public Book returnBook(Integer bookId, User user) {
-        Book book = bookRepository.findById(bookId).get();
-        System.out.println(book.getName());
-        if (Objects.equals(book.getReader().getId(), user.getId())) {
-            book.setReader(null);
-            book.setBorrowedAt(null);
-        }
-        return bookRepository.save(book);
-    }*/
-
-    /*public List<Book> getBooksByReader(User user) {
-        return bookRepository.findAllByReader(user);
-    }*/
-
-   /* public List<Book> getBooksByCategories(List<Integer> categoryIds) {
-        return bookRepository.findAllByCategoriesId(categoryIds);
-    }*/
-
-    /*public List<Book> getBooksByReaderAge(AgeCategory ageCategory) {
-        List<Book> books;
-        switch (ageCategory) {
-            case UNDER_18 ->
-                books = bookRepository.findAllByReaderDateOfBirthGreaterThan(
-                        LocalDate.now().minusYears(18)
-                );
-            case BETWEEN_18_AND_23 ->
-                books = bookRepository.findALlByReaderDateOfBirthBetween(
-                        LocalDate.now().minusYears(24),
-                        LocalDate.now().minusYears(18)
-                );
-            case BETWEEN_24_AND_35 ->
-                books = bookRepository.findALlByReaderDateOfBirthBetween(
-                        LocalDate.now().minusYears(36),
-                        LocalDate.now().minusYears(24)
-                );
-            case BETWEEN_36_AND_50 ->
-                books = bookRepository.findALlByReaderDateOfBirthBetween(
-                        LocalDate.now().minusYears(51),
-                        LocalDate.now().minusYears(36)
-                );
-            default ->
-                books = bookRepository.findAllByReaderDateOfBirthLessThan(
-                        LocalDate.now().minusYears(51)
-                );
-        }
-        return books;
-    }*/
-
-    /*public List<Book> getTop5BooksLastYear() {
-        LocalDate lastYear = LocalDate.now().minusYears(1);
-        return bookLoanRepository.findTop5BooksLastYear(lastYear);
-    }
-
-    */
     public BookResponse addBookToLibrary(BookRequest bookRequest) {
         List<Author> authors = getAuthorsByIDs(bookRequest.getAuthorIDs());
         Set<Category> categories = getCategoriesByIDs(bookRequest.getCategoriesIDs());
@@ -143,22 +68,29 @@ public class BookService {
     }
 
     public BookResponse editBook(Long id, BookRequest bookRequest) {
-        Book newBook = bookMapper.toEntity(bookRequest);
+        Set<Category> categories = getCategoriesByIDs(bookRequest.getCategoriesIDs());
+        List<Author> authors = getAuthorsByIDs(bookRequest.getAuthorIDs());
         Book updatedBook = bookRepository.findById(id)
                 .map(book -> {
+                    bookRepository.deleteById(id);
                     book.setName(bookRequest.getName());
                     book.setDescription(bookRequest.getDescription());
-                    book.setAuthors(getAuthorsByIDs(bookRequest.getAuthorIDs()));
-                    book.setCategories(getCategoriesByIDs(bookRequest.getCategoriesIDs()));
+                    book.setAuthors(authors);
+                    book.setCategories(categories);
                     book.setNumOfPages(bookRequest.getNumOfPages());
                     return bookRepository.save(book);
                 })
-                .orElseGet(() -> bookRepository.save(newBook));
+                .orElseGet(() -> {
+                    Book newBook = bookMapper.toEntity(bookRequest);
+                    newBook.setAuthors(authors);
+                    newBook.setCategories(categories);
+                    return bookRepository.save(newBook);
+                });
 
         return bookMapper.toResponse(updatedBook);
     }
 
-    public void deleteBook(Long id) {
+    public void deleteBookById(Long id) {
         bookRepository.deleteById(id);
     }
 }

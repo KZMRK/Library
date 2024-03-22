@@ -41,58 +41,6 @@ public class BookController {
     public void deleteBook(
             @PathVariable Long id
     ) {
-        bookService.deleteBook(id);
+        bookService.deleteBookById(id);
     }
-
-    /* Ability to borrow books;*/
-    /*@PutMapping("/borrow")
-    public ResponseEntity<?> borrowBook(
-        @RequestParam List<Integer> bookIds,
-        @AuthenticationPrincipal User user
-    ) {
-        if (bookIds.size() > 7) {
-            return ResponseEntity.badRequest()
-                    .body("You can borrow up to 7 books at a time");
-        }
-        List<Book> borrowedBooks = bookService.borrowBooksById(bookIds, user);
-        return ResponseEntity.ok(borrowedBooks);
-    }*/
-
-    /* Ability to return books; */
-    /*@PutMapping("/return/{bookId}")
-    public ResponseEntity<?> returnBook(
-            @PathVariable Integer bookId,
-            @AuthenticationPrincipal User user
-    ) {
-        Book returnedBook = bookService.returnBook(bookId, user);
-        return ResponseEntity.ok(returnedBook);
-    }*/
-
-    /* Ability to view borrowed books; */
-    /*@GetMapping("/borrowed")
-    public ResponseEntity<?> getBorrowedBooks(@AuthenticationPrincipal User user) {
-        List<Book> book = bookService.getBooksByReader(user);
-        return ResponseEntity.ok(book);
-    }*/
-
-    /* Ability to view books by one or multiple categories *//*
-    @GetMapping("/byCategories")
-    public ResponseEntity<?> getBooksByCategories(@RequestParam List<Integer> categoriesIds) {
-        List<Book> books = bookService.getBooksByCategories(categoriesIds);
-        return ResponseEntity.ok(books);
-    }*/
-
-    /* Ability to view borrowed books for any of these ages: */
-    /*@GetMapping("/borrowed/{ageCategory}")
-    public ResponseEntity<?> getBooksByAgeRange(@PathVariable AgeCategory ageCategory) {
-        List<Book> books = bookService.getBooksByReaderAge(ageCategory);
-        return ResponseEntity.ok(books);
-    }*/
-
-    /* Ability to view the top 5 most popular books in the library for the last year; *//*
-    @GetMapping("/top5")
-    public ResponseEntity<?> getTop5BooksLastYear() {
-        List<Book> books = bookService.getTop5BooksLastYear();
-        return ResponseEntity.ok(books);
-    }*/
 }
