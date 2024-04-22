@@ -19,9 +19,11 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(req -> req
                         .requestMatchers("/api/auth/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/books", "/api/authors").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/authors/**").hasRole("READER")
-                        .requestMatchers(HttpMethod.POST, "/api/books/**", "/api/authors/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/api/books/**", "/api/authors/**", "/api/categories/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/books", "/api/authors", "/api/categories").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/api/books/*", "/api/authors/*", "/api/categories/*").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/api/books/*/borrow", "api/books/*/return").hasRole("READER")
+                        .requestMatchers(HttpMethod.GET, "/api/readers/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .httpBasic(Customizer.withDefaults());

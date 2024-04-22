@@ -1,10 +1,6 @@
 package com.kazmiruk.library.repositories;
 
-import com.kazmiruk.library.entities.Category;
-import org.springframework.data.jpa.repository.JpaRepository;
+import com.kazmiruk.library.model.entities.Category;
 
-import java.util.Optional;
-
-public interface CategoryRepository extends JpaRepository<Category, Short> {
-    Optional<Category> findByName(String name);
+public interface CategoryRepository extends BaseRepository<Category, Integer> {
 }

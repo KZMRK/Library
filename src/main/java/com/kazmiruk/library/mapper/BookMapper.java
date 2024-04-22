@@ -1,14 +1,20 @@
 package com.kazmiruk.library.mapper;
 
-import com.kazmiruk.library.dto.BookRequest;
-import com.kazmiruk.library.dto.BookResponse;
-import com.kazmiruk.library.entities.Book;
+import com.kazmiruk.library.model.dto.BookDto;
+import com.kazmiruk.library.model.entities.Book;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 
 @Mapper(componentModel = "spring", uses = {AuthorMapper.class, CategoryMapper.class})
 public interface BookMapper {
 
-    Book toEntity(BookRequest bookDTO);
+    @Mapping(target = "id", ignore = true)
+    Book toEntity(BookDto bookDto);
 
-    BookResponse toResponse(Book book);
+    BookDto toDto(Book book);
+
+    @Mapping(target = "id", ignore = true)
+    void updateEntity(@MappingTarget Book book, BookDto bookDto);
+
 }

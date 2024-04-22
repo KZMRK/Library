@@ -1,19 +1,20 @@
 package com.kazmiruk.library.mapper;
 
-import com.kazmiruk.library.dto.AuthorRequest;
-import com.kazmiruk.library.dto.AuthorResponse;
-import com.kazmiruk.library.entities.Author;
+import com.kazmiruk.library.model.dto.AuthorDto;
+import com.kazmiruk.library.model.entities.Author;
 import org.mapstruct.Mapper;
-
-import java.util.List;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 
 @Mapper(componentModel = "spring")
 public interface AuthorMapper {
 
+    @Mapping(target = "books", ignore = true)
+    Author toEntity(AuthorDto authorDto);
 
-    Author toEntity(AuthorRequest authorRequest);
+    AuthorDto toDto(Author author);
 
-    AuthorResponse toResponse(Author author);
-
-    List<AuthorResponse> toResponses(List<Author> authors);
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "books", ignore = true)
+    void updateEntity(@MappingTarget Author author, AuthorDto authorDto);
 }
