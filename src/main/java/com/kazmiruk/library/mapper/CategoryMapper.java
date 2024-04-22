@@ -1,19 +1,20 @@
 package com.kazmiruk.library.mapper;
 
-import com.kazmiruk.library.dto.CategoryResponse;
-import com.kazmiruk.library.entities.Category;
+import com.kazmiruk.library.model.dto.CategoryDto;
+import com.kazmiruk.library.model.entities.Category;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-
-import java.util.List;
+import org.mapstruct.MappingTarget;
 
 @Mapper(componentModel = "spring")
 public interface CategoryMapper {
-    CategoryResponse toResponse(Category category);
-
 
     @Mapping(target = "books", ignore = true)
-    Category toEntity(CategoryResponse categoryRequest);
+    Category toEntity(CategoryDto categoryDto);
 
-    List<CategoryResponse> toResponse(List<Category> categories);
+    CategoryDto toDto(Category category);
+
+    @Mapping(target = "books", ignore = true)
+    void updateEntity(@MappingTarget Category category, CategoryDto categoryDto);
+
 }
